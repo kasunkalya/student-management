@@ -9,6 +9,10 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('/', function () {
+    return view('auth.login');
+})->name('login');
+
 // Secure routes with authentication
 
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');
