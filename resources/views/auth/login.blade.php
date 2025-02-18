@@ -3,56 +3,54 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h4>Login</h4>
-                </div>
-                <div class="card-body">
-                    <form id="loginForm">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                        </div>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card p-4 shadow" style="width: 350px;">
+        <h3 class="text-center text-primary">Login</h3>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
-                        </div>
+        <form id="loginForm">
+            <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-                </div>
+            <div class="mb-3">
+                <label class="form-label">Email:</label>
+                <input type="email" id="email" class="form-control" required>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password:</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
     </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
-    $(document).ready(function () {
-        $('#loginForm').on('submit', function (e) {
+    $(document).ready(function() {
+        $('#loginForm').on('submit', function(e) {
             e.preventDefault();
 
             let formData = {
                 email: $('#email').val(),
-                password: $('#password').val(),
-                _token: '{{ csrf_token() }}'
+                password: $('#password').val()
             };
 
             $.ajax({
-                url: "{{ route('login') }}",
+                url: "/api/login",
                 type: "POST",
-                data: formData,
-                success: function (response) {
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    localStorage.setItem('authToken', response.token);
                     Swal.fire("Success!", "Login successful!", "success").then(() => {
-                        window.location.href = "{{ route('dashboard') }}"; // Redirect to dashboard
+                        window.location.href = "/students";
                     });
                 },
-                error: function (xhr) {
-                    Swal.fire("Error!", "Invalid credentials, please try again.", "error");
+                error: function(xhr) {
+                    Swal.fire("Error!", "Invalid credentials!", "error");
                 }
             });
         });

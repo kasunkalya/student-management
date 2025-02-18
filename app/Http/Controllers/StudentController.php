@@ -8,7 +8,7 @@ use App\Models\Course;
 
 class StudentController extends Controller
 {
- 
+  
     public function index(Request $request)
     {
         $query = Student::query();

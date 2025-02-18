@@ -3,14 +3,22 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AuthController;
+
+
+// Authentication Routes
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
 Route::get('/students', [StudentController::class, 'studentList']);
 Route::get('/students/{id}', [StudentController::class, 'show']);
-
+Route::post('/students', [StudentController::class, 'store']);
+Route::POST('/students/{id}', [StudentController::class, 'update']);
+Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/students', [StudentController::class, 'store']);
-    Route::put('/students/{id}', [StudentController::class, 'update']);
-    Route::delete('/students/{id}', [StudentController::class, 'destroy']); 
+    //Route::post('/students', [StudentController::class, 'store']);
+
+   
 });

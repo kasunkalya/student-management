@@ -49,13 +49,12 @@
 
             $.ajax({
                 url: "/api/students/" + studentId, 
-                type: "PUT",
+                type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(formData),
                 headers: {
-                    "Authorization": "Bearer " + localStorage.getItem('authToken'),
+                    "Authorization": "Bearer " + localStorage.getItem('authToken'),  // Ensure the token is set
                     "Accept": "application/json",
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
                     Swal.fire({
@@ -68,15 +67,19 @@
                     });
                 },
                 error: function(xhr) {
-                    let errors = xhr.responseJSON?.errors || {};
-                    let errorMessage = Object.values(errors).map(err => err[0]).join("\n");
-
-                    Swal.fire({
-                        title: "Error!",
-                        text: errorMessage || "Something went wrong!",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
+                    let errorMessage = "Something went wrong!";
+        if (xhr.status === 401) { // Unauthenticated Error
+            errorMessage = "Session expired. Please log in again.";
+            window.location.href = "/login";  // Redirect to login
+        } else if (xhr.responseJSON?.errors) {
+            errorMessage = Object.values(xhr.responseJSON.errors).map(err => err[0]).join("\n");
+        }
+        Swal.fire({
+            title: "Error!",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonText: "OK"
+        });
                 }
             });
         });

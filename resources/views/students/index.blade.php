@@ -81,7 +81,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/students/${studentId}`,
+                        url: `api/students/${studentId}`,
                         type: "POST",
                         data: { _method: 'DELETE', _token: '{{ csrf_token() }}' },
                         success: function() {
