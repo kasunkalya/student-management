@@ -46,7 +46,10 @@
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(formData),
-              
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('authToken'),  // Ensure the token is set
+                    "Accept": "application/json",
+                },
                 success: function(response) {
                     Swal.fire({
                         title: "Success!",

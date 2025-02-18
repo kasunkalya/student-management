@@ -84,6 +84,10 @@
                         url: `api/students/${studentId}`,
                         type: "POST",
                         data: { _method: 'DELETE', _token: '{{ csrf_token() }}' },
+                        headers: {
+                            "Authorization": "Bearer " + localStorage.getItem('authToken'),  // Ensure the token is set
+                            "Accept": "application/json",
+                        },
                         success: function() {
                             Swal.fire("Deleted!", "Student has been removed.", "success");
                             $(`button[data-id="${studentId}"]`).closest('tr').remove();
