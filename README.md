@@ -91,3 +91,8 @@ Handling CSRF & Authentication
 CSRF Protection Disabled for API: The VerifyCsrfToken middleware excludes API routes.
 
 Authentication: If you require authentication, configure Laravel Sanctum.
+
+Test User
+
+User Name : test@example.com
+Password : password
